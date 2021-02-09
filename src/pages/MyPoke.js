@@ -4,7 +4,9 @@ import { LogoutOutlined } from "@ant-design/icons";
 const { Meta } = Card;
 const { Content } = Layout;
 const MyPoke = () => {
-  const [pokemon, setPokemon] = useState(JSON.parse(localStorage.owned));
+  const [pokemon, setPokemon] = useState(
+    localStorage.owned == undefined ? [] : JSON.parse(localStorage.owned)
+  );
   const deletePoke = (pokes) => {
     let poke = JSON.parse(localStorage.owned).filter(
       (item) => item.name != pokes
@@ -24,7 +26,7 @@ const MyPoke = () => {
           marginBottom: 64,
         }}
       >
-        {pokemon != undefined
+        {pokemon.length != 0 && pokemon != undefined
           ? pokemon.map((item) => (
               <Card
                 style={{ width: "100%", marginTop: 16 }}
