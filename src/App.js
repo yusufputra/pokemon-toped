@@ -5,7 +5,7 @@ import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   UserOutlined,
-  UnorderedListOutlined
+  UnorderedListOutlined,
 } from "@ant-design/icons";
 import MyPoke from "./pages/MyPoke";
 import PokeList from "./pages/PokeList";
@@ -32,13 +32,11 @@ function App() {
             <Link to="/">My Pokemon</Link>
           </Menu.Item>
           <Menu.Item key="2" icon={<UnorderedListOutlined />}>
-          <Link to="/pokeList">Pokemon List</Link>
+            <Link to="/pokeList">Pokemon List</Link>
           </Menu.Item>
         </Menu>
       </Sider>
-      <Layout className={css(
-        {height:'100vh'}
-      )}>
+      <Layout className={css({ height: "100vh" })}>
         <Header className="site-layout-background" style={{ padding: 0 }}>
           {React.createElement(
             collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
@@ -48,21 +46,12 @@ function App() {
             }
           )}
         </Header>
-        <Content
-          className="site-layout-background"
-          style={{
-            margin: "24px 16px",
-            padding: 24,
-            minHeight: 280,
-          }}
-        >
-          <Switch>
-            <Route exact path={"/"} component={MyPoke} />
-            <Route path={"/pokeDetail"} component={PokeDetail} />
-            <Route path={"/pokeList"} component={PokeList} />
-            <Route component={NotFound} />
-          </Switch>
-        </Content>
+        <Switch>
+          <Route exact path={"/"} component={MyPoke} />
+          <Route path={"/pokeDetail/:name"} component={PokeDetail} />
+          <Route path={"/pokeList"} component={PokeList} />
+          <Route component={NotFound} />
+        </Switch>
       </Layout>
     </Layout>
   );

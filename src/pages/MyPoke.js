@@ -1,31 +1,58 @@
 import React, { useState } from "react";
-import { Skeleton, Card, Avatar } from "antd";
-import {
-    LogoutOutlined,
-} from "@ant-design/icons";
+import { Skeleton, Card, Avatar, Layout } from "antd";
+import { LogoutOutlined } from "@ant-design/icons";
 const { Meta } = Card;
-
+const { Content } = Layout;
 const MyPoke = () => {
-  const [loading, setLoading] = useState(false);
+  const [pokemon, setPokemon] = useState(JSON.parse(localStorage.owned));
+  const deletePoke = (pokes) => {
+    let poke = JSON.parse(localStorage.owned).filter(
+      (item) => item.name != pokes
+    );
+    localStorage.setItem("owned", JSON.stringify(poke));
+    setPokemon(poke);
+  };
+
   return (
-    <>
-      <Card
-        style={{ width: "100%", marginTop: 16 }}
-        actions={[
-          <div><LogoutOutlined key="Delete" /> Release Pokemon</div>,
-        ]}
+    <Layout>
+      <Content
+        className="site-layout-background"
+        style={{
+          padding: 24,
+          margin: 0,
+          minHeight: "min-content",
+          marginBottom: 64,
+        }}
       >
-        <Skeleton loading={loading} avatar active>
-          <Meta
-            avatar={
-              <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-            }
-            title="Card title"
-            description="This is the description"
-          />
-        </Skeleton>
-      </Card>
-    </>
+        {pokemon != undefined
+          ? pokemon.map((item) => (
+              <Card
+                style={{ width: "100%", marginTop: 16 }}
+                actions={[
+                  <div
+                    onClick={() => {
+                      deletePoke(item.name);
+                    }}
+                  >
+                    <LogoutOutlined key="Delete" /> Release Pokemon
+                  </div>,
+                ]}
+              >
+                <Skeleton
+                  loading={localStorage.owned == undefined}
+                  avatar
+                  active
+                >
+                  <Meta
+                    avatar={<Avatar src={item.image} />}
+                    title={item.name}
+                  />
+                </Skeleton>
+              </Card>
+            ))
+          : "tidak ada pokemon"}
+      </Content>
+    </Layout>
   );
 };
 
