@@ -1,10 +1,24 @@
 import React, { useState } from "react";
-import { Skeleton, Card, Avatar, Collapse, Typography, Layout } from "antd";
+import {
+  Skeleton,
+  Card,
+  Avatar,
+  Collapse,
+  Typography,
+  Layout,
+  Modal,
+  Input,
+  message,
+} from "antd";
 import { LoginOutlined } from "@ant-design/icons";
 import { useParams, useLocation, useHistory } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { ToDos } from "../component/ToDos";
 import axios from "axios";
+import Type from "../component/Type";
+import Abilities from "../component/Abilities";
+import Moves from "../component/Moves";
 
 const { Meta } = Card;
 const { Panel } = Collapse;
@@ -42,12 +56,36 @@ const PokeDetail = () => {
   const { name } = useParams();
   const location = useLocation();
   const data = ToDos(GET_POKEMON, { name: name });
+  const confirm = (data) => {
+    let nick = "";
+    Modal.confirm({
+      title: "Give Nickname",
+      icon: <ExclamationCircleOutlined />,
+      content: (
+        <div>
+          Nickname :{" "}
+          <Input
+            onChange={(e) => {
+              nick = e.target.value;
+            }}
+          />
+        </div>
+      ),
+      okText: "Save",
+      cancelText: "Release",
+      onOk: () => {
+        write({ name: data.name, image: data.image, nickname: nick });
+      },
+    });
+  };
   const write = async (data) => {
     console.log(data);
     if (localStorage.owned == undefined) {
+      message.success("Pokemon saved");
       localStorage.setItem("owned", JSON.stringify([data]));
       history.push("/");
     } else {
+      message.success("Pokemon saved");
       let dataa = JSON.parse(localStorage.owned);
       dataa.push(data);
       localStorage.setItem("owned", JSON.stringify(dataa));
@@ -78,10 +116,16 @@ const PokeDetail = () => {
             actions={[
               <div
                 onClick={() => {
-                  write({
-                    name: data.pokemon.name,
-                    image: location.state.image,
-                  });
+                  let prob = Math.random() * 100;
+                  if (prob > 50) {
+                    message.success("Got the pokemon");
+                    confirm({
+                      name: data.pokemon.name,
+                      image: location.state.image,
+                    });
+                  } else {
+                    message.error("Failed to catch Pokemon");
+                  }
                 }}
               >
                 <LoginOutlined key="getpokemon" /> Get Pokemon
@@ -103,7 +147,7 @@ const PokeDetail = () => {
           {data != "undefined" && data != "Loading..."
             ? data.pokemon.types.map((item, index) => (
                 <Panel header={item.type.name} key={index}>
-                  <p>{item.type.url}</p>
+                  <Type api={item.type.url} />
                 </Panel>
               ))
             : false}
@@ -116,7 +160,7 @@ const PokeDetail = () => {
                   header={item.ability.name + ` (${item.slot} Slot)`}
                   key={index}
                 >
-                  <p>{item.ability.url}</p>
+                  <Abilities api={item.ability.url} />
                 </Panel>
               ))
             : false}
@@ -124,12 +168,9 @@ const PokeDetail = () => {
         <Title level={5}>Moves</Title>
         <Collapse defaultActiveKey={["0"]}>
           {data != "undefined" && data != "Loading..."
-            ? data.pokemon.abilities.map((item, index) => (
-                <Panel
-                  header={item.ability.name + ` (${item.slot} Slot)`}
-                  key={index}
-                >
-                  <p>{item.ability.url}</p>
+            ? data.pokemon.moves.map((item, index) => (
+                <Panel header={item.move.name} key={index}>
+                  <Moves api={item.move.url} />
                 </Panel>
               ))
             : false}

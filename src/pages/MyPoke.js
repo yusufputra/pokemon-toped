@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Skeleton, Card, Avatar, Layout } from "antd";
+import { Skeleton, Card, Avatar, Layout, message } from "antd";
 import { LogoutOutlined } from "@ant-design/icons";
 const { Meta } = Card;
 const { Content } = Layout;
@@ -13,6 +13,7 @@ const MyPoke = () => {
     );
     localStorage.setItem("owned", JSON.stringify(poke));
     setPokemon(poke);
+    message.success("Pokemon deleted");
   };
 
   return (
@@ -47,7 +48,8 @@ const MyPoke = () => {
                 >
                   <Meta
                     avatar={<Avatar src={item.image} />}
-                    title={item.name}
+                    title={item.nickname}
+                    description={item.name}
                   />
                 </Skeleton>
               </Card>
