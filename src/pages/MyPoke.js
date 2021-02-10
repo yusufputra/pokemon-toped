@@ -9,11 +9,11 @@ const MyPoke = () => {
   );
   const deletePoke = (pokes) => {
     let poke = JSON.parse(localStorage.owned).filter(
-      (item) => item.name != pokes
+      (item) => item.nickname != pokes
     );
     localStorage.setItem("owned", JSON.stringify(poke));
     setPokemon(poke);
-    message.success("Pokemon deleted");
+    message.success("Pokemon released");
   };
 
   return (
@@ -34,7 +34,7 @@ const MyPoke = () => {
                 actions={[
                   <div
                     onClick={() => {
-                      deletePoke(item.name);
+                      deletePoke(item.nickname);
                     }}
                   >
                     <LogoutOutlined key="Delete" /> Release Pokemon

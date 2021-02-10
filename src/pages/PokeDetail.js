@@ -58,6 +58,7 @@ const PokeDetail = () => {
   const data = ToDos(GET_POKEMON, { name: name });
   const confirm = (data) => {
     let nick = "";
+    let avail = true;
     Modal.confirm({
       title: "Give Nickname",
       icon: <ExclamationCircleOutlined />,
@@ -67,6 +68,12 @@ const PokeDetail = () => {
           <Input
             onChange={(e) => {
               nick = e.target.value;
+              JSON.parse(localStorage.owned).map((item) => {
+                if (item.nickname == e.target.value) {
+                  avail = false;
+                }
+              });
+              console.log(avail);
             }}
           />
         </div>
@@ -74,7 +81,9 @@ const PokeDetail = () => {
       okText: "Save",
       cancelText: "Release",
       onOk: () => {
-        write({ name: data.name, image: data.image, nickname: nick });
+        avail
+          ? write({ name: data.name, image: data.image, nickname: nick })
+          : message.error("Nickname already used");
       },
     });
   };
