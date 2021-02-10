@@ -7,8 +7,6 @@ export const ToDos = (GET_QUERY, gqlvariables) => {
   if (loading) console.log("Loading...");
   if (error) console.log(`Error! ${error.message}`);
 
-  console.log("Response from server", data);
-
   return data == undefined
     ? {
         pokemons: { results: [] },

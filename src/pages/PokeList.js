@@ -9,7 +9,6 @@ const { Content } = Layout;
 
 const PokeList = () => {
   const { data } = useContext(PokeContext);
-  console.log(data);
   const [pokemon, setPokemon] = useState(
     localStorage.owned == undefined ? [] : JSON.parse(localStorage.owned)
   );

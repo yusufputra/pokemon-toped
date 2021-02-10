@@ -8,9 +8,7 @@ const Moves = (api) => {
   });
   useEffect(() => {
     axios.get(api.api).then((response) => {
-      console.log(response);
       setState(response.data);
-      console.log(state);
     });
   }, []);
   return (

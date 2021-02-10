@@ -27,7 +27,6 @@ const gqlVariables = {
 const PokeContextProvider = (props) => {
 //   const [data, setData] = useState(ToDos(GET_POKEMONS, gqlVariables));
   const data = ToDos(GET_POKEMONS, gqlVariables);
-  console.log(data);
   return (
     <PokeContext.Provider value={{ data }}>
       {props.children}

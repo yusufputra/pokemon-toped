@@ -73,7 +73,6 @@ const PokeDetail = () => {
                   avail = false;
                 }
               });
-              console.log(avail);
             }}
           />
         </div>
@@ -88,7 +87,6 @@ const PokeDetail = () => {
     });
   };
   const write = async (data) => {
-    console.log(data);
     if (localStorage.owned == undefined) {
       message.success("Pokemon saved");
       localStorage.setItem("owned", JSON.stringify([data]));
@@ -98,13 +96,11 @@ const PokeDetail = () => {
       let dataa = JSON.parse(localStorage.owned);
       dataa.push(data);
       localStorage.setItem("owned", JSON.stringify(dataa));
-      console.log(dataa);
       history.push("/");
     }
   };
   const fetchData = (url) => {
     axios.get(url).then((result) => {
-      console.log(result);
     });
   };
   fetchData("https://pokeapi.co/api/v2/type/12/");
