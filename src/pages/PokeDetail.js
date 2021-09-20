@@ -64,7 +64,7 @@ const PokeDetail = () => {
       icon: <ExclamationCircleOutlined />,
       content: (
         <div>
-          Nickname :{" "}
+          Nicknames :{" "}
           <Input
             onChange={(e) => {
               nick = e.target.value;
